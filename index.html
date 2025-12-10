@@ -32,26 +32,19 @@
                         textMain: '#ededed', textMuted: '#737373',
                     },
                     fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'], mono: ['"Share Tech Mono"', 'monospace'] },
-                    boxShadow: { 
-                        'glow': '0 0 25px -5px rgba(37, 99, 235, 0.2)',
-                        'glow-accent': '0 0 25px -5px rgba(124, 58, 237, 0.2)',
-                        'nav': '0 -10px 40px -10px rgba(0,0,0,0.8)'
-                    },
+                    boxShadow: { 'glow': '0 0 25px -5px rgba(37, 99, 235, 0.2)' },
                     animation: {
                         'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'scan': 'scan 1.5s ease-in-out infinite',
                         'shake': 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
-                        'bounce-slight': 'bounceSlight 2s infinite',
-                        'float': 'float 6s ease-in-out infinite'
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
                     keyframes: {
                         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
                         slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
                         scan: { '0%, 100%': { opacity: '0.2', transform: 'scale(1)' }, '50%': { opacity: '1', transform: 'scale(1.1)' } },
-                        shake: { '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' }, '20%, 80%': { transform: 'translate3d(2px, 0, 0)' }, '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' }, '40%, 60%': { transform: 'translate3d(4px, 0, 0)' } },
-                        bounceSlight: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
-                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
+                        shake: { '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' }, '20%, 80%': { transform: 'translate3d(2px, 0, 0)' }, '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' }, '40%, 60%': { transform: 'translate3d(4px, 0, 0)' } }
                     }
                 }
             }
@@ -65,15 +58,16 @@
         ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
         
         .glass-solid { background: rgba(15, 15, 17, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-nav { background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-nav { background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); }
         
         input, select { color-scheme: dark; transition: all 0.2s; }
         input:focus, select:focus { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5); border-color: #2563eb; }
         
-        #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s; }
-        #main-wrapper { transition: padding-left 0.3s; }
-        .sidebar-text { transition: opacity 0.2s; white-space: nowrap; overflow: hidden; }
-        .collapsed .sidebar-text { opacity: 0; width: 0; pointer-events: none; }
+        /* Mobile Specifics */
+        .bottom-nav-item { position: relative; transition: all 0.3s; }
+        .bottom-nav-item.active { color: #2563eb; }
+        .bottom-nav-item.active i { transform: translateY(-2px); }
+        .bottom-nav-item.active::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: #2563eb; border-radius: 50%; box-shadow: 0 0 8px #2563eb; }
         
         #startup-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s, visibility 0.5s; }
         #lock-screen { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9998; backdrop-filter: blur(20px); }
@@ -109,22 +103,18 @@
 
         .bg-ambient { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; background: radial-gradient(circle at 15% 50%, rgba(37, 99, 235, 0.05), transparent 25%), radial-gradient(circle at 85% 30%, rgba(124, 58, 237, 0.05), transparent 25%); }
         
-        /* Mobile Nav Specifics */
-        .bottom-nav-item { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; color: #737373; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .bottom-nav-item.active { color: #2563eb; transform: translateY(-2px); }
-        .bottom-nav-item.active i { transform: scale(1.1); }
-        .bottom-nav-item.active::after { content: ''; position: absolute; bottom: 8px; width: 4px; height: 4px; background: #2563eb; border-radius: 50%; box-shadow: 0 0 8px #2563eb; }
-        
         @media (max-width: 1024px) { 
-            #sidebar { display: none !important; } /* FORCE HIDE SIDEBAR ON MOBILE */
-            #main-wrapper { padding-left: 0 !important; padding-bottom: 80px; } /* Add bottom padding for nav */
-            .mobile-header-padding { padding-top: 10px; }
+            #sidebar { display: none !important; } 
+            #main-wrapper { padding-left: 0 !important; padding-bottom: 80px; }
+            .atm-card { aspect-ratio: 1.586; }
         }
     </style>
 </head>
 <body class="overflow-x-hidden antialiased selection:bg-primary/30 selection:text-white">
 
+    <!-- STARTUP SCREEN -->
     <div id="startup-screen"><div class="text-center"><div class="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent shadow-glow animate-bounce"><i class="fa-solid fa-coins text-3xl text-white"></i></div><h1 class="text-3xl font-bold text-white mb-6 tracking-tight">DYERZ<span class="text-primary">.LTD</span></h1><div class="w-48 h-1 bg-surface2 rounded-full overflow-hidden mb-2"><div id="loader-progress" class="loader-bar"></div></div><p id="startup-text" class="text-[10px] text-textMuted font-mono uppercase tracking-widest">System Boot...</p></div></div>
+    
     <div class="bg-ambient"></div>
     <div id="toast-container" class="fixed top-4 right-4 space-y-3 pointer-events-none z-[10000]"></div>
     
@@ -132,11 +122,12 @@
     <div id="lock-screen" class="hidden flex flex-col items-center justify-center transition-opacity duration-300"><div class="w-full max-w-sm px-8 flex flex-col items-center animate-slide-up"><div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 shadow-glow animate-float"><i id="lock-icon" class="fa-solid fa-shield-halved text-white text-2xl"></i></div><h2 class="text-2xl font-bold text-white mb-2" id="lock-title">DYERZ Security</h2><p class="text-textMuted text-sm mb-8 text-center" id="lock-msg">Identitas Terproteksi. Masukkan PIN.</p><div class="flex gap-4 mb-10" id="pin-display"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="grid grid-cols-3 gap-6 mb-8 w-full max-w-[280px]"><button class="keypad-btn" onclick="security.typePin(1)">1</button><button class="keypad-btn" onclick="security.typePin(2)">2</button><button class="keypad-btn" onclick="security.typePin(3)">3</button><button class="keypad-btn" onclick="security.typePin(4)">4</button><button class="keypad-btn" onclick="security.typePin(5)">5</button><button class="keypad-btn" onclick="security.typePin(6)">6</button><button class="keypad-btn" onclick="security.typePin(7)">7</button><button class="keypad-btn" onclick="security.typePin(8)">8</button><button class="keypad-btn" onclick="security.typePin(9)">9</button><div class="flex items-center justify-center"><div id="fingerprint-btn" class="fingerprint-container" onmousedown="security.startScan()" ontouchstart="security.startScan()" onmouseup="security.endScan()" ontouchend="security.endScan()"><div class="fingerprint-progress"></div><i class="fa-solid fa-fingerprint text-2xl text-textMuted transition-colors"></i></div></div><button class="keypad-btn" onclick="security.typePin(0)">0</button><button class="h-16 w-16 rounded-full flex items-center justify-center text-danger hover:bg-danger/10 transition-all active:scale-95" onclick="security.delPin()"><i class="fa-solid fa-delete-left text-xl"></i></button></div><button id="btn-cancel-lock" onclick="security.cancelVerify()" class="text-xs text-textMuted hover:text-white transition-colors hidden">Batalkan</button><button id="btn-forgot-pin" onclick="security.forgotPin()" class="text-xs text-textMuted hover:text-white transition-colors">Lupa PIN?</button></div></div>
 
     <!-- SIDEBAR (DESKTOP ONLY) -->
-    <!-- Changed: Added 'hidden lg:flex' to hide on mobile completely -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-surface/95 backdrop-blur-xl lg:bg-surface border-r border-border hidden lg:flex flex-col h-full shadow-2xl lg:shadow-none overflow-hidden group/sidebar select-none transition-transform duration-300">
-        <div class="h-24 flex items-center justify-between px-6 border-b border-border/50 shrink-0"><div class="flex items-center"><div class="logo-icon w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mr-4 shadow-glow shrink-0"><i class="fa-solid fa-coins text-white text-lg"></i></div><div class="logo-text overflow-hidden"><h1 class="text-xl font-bold tracking-tight text-white leading-tight">DYERZ<span class="text-primary">.LTD</span></h1><p class="text-[10px] text-textMuted tracking-widest uppercase">Finance OS 2.0</p></div></div></div>
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-surface/95 backdrop-blur-xl lg:bg-surface border-r border-border hidden lg:flex flex-col h-full shadow-2xl lg:shadow-none overflow-hidden group/sidebar select-none transition-all duration-300">
+        <div class="h-24 flex items-center justify-between px-6 border-b border-border/50 shrink-0">
+            <div class="flex items-center"><div class="logo-icon w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mr-4 shadow-glow shrink-0"><i class="fa-solid fa-coins text-white text-lg"></i></div><div class="logo-text overflow-hidden"><h1 class="text-xl font-bold tracking-tight text-white leading-tight">DYERZ<span class="text-primary">.LTD</span></h1><p class="text-[10px] text-textMuted tracking-widest uppercase">Finance OS 2.0</p></div></div>
+        </div>
         <div class="flex-1 overflow-y-auto py-6 px-3 space-y-1 scrollbar-hide">
-            <button onclick="router.navigate('dashboard')" class="nav-item w-full flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-medium transition-all text-textMuted hover:bg-white/5 hover:text-white group relative" data-page="dashboard"><div class="w-6 h-6 flex items-center justify-center shrink-0 relative"><i class="fa-solid fa-border-all text-lg group-hover:text-primary transition-colors z-10"></i><div class="absolute inset-0 bg-primary/30 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div></div><span class="sidebar-text">Dashboard</span></button>
+            <button onclick="router.navigate('dashboard')" class="nav-item w-full flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-medium transition-all text-textMuted hover:bg-white/5 hover:text-white group relative" data-page="dashboard"><div class="w-6 h-6 flex items-center justify-center shrink-0 relative"><i class="fa-solid fa-border-all text-lg group-hover:text-primary transition-colors z-10"></i></div><span class="sidebar-text">Dashboard</span></button>
             <button onclick="router.navigate('wallet')" class="nav-item w-full flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-medium transition-all text-textMuted hover:bg-white/5 hover:text-white group" data-page="wallet"><div class="w-6 h-6 flex items-center justify-center shrink-0"><i class="fa-solid fa-wallet text-lg group-hover:text-gold transition-colors"></i></div><span class="sidebar-text">Wallet & ATM</span></button>
             <button onclick="router.navigate('transactions')" class="nav-item w-full flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-medium transition-all text-textMuted hover:bg-white/5 hover:text-white group" data-page="transactions"><div class="w-6 h-6 flex items-center justify-center shrink-0"><i class="fa-solid fa-arrow-right-arrow-left text-lg group-hover:text-success transition-colors"></i></div><span class="sidebar-text">Transaksi</span></button>
             <button onclick="router.navigate('goals')" class="nav-item w-full flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-medium transition-all text-textMuted hover:bg-white/5 hover:text-white group" data-page="goals"><div class="w-6 h-6 flex items-center justify-center shrink-0"><i class="fa-solid fa-bullseye text-lg group-hover:text-accent transition-colors"></i></div><span class="sidebar-text">Target & Impian</span></button>
@@ -145,59 +136,105 @@
             <button onclick="router.navigate('settings')" class="nav-item w-full flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-medium transition-all text-textMuted hover:bg-white/5 hover:text-white group" data-page="settings"><div class="w-6 h-6 flex items-center justify-center shrink-0"><i class="fa-solid fa-sliders text-lg group-hover:text-primary transition-colors"></i></div><span class="sidebar-text">Pengaturan</span></button>
             <button onclick="security.lockApp()" class="w-full flex items-center gap-3 px-3 py-3.5 rounded-xl text-sm font-medium transition-all text-textMuted hover:bg-white/5 hover:text-white group mt-auto"><div class="w-6 h-6 flex items-center justify-center shrink-0"><i class="fa-solid fa-lock text-lg group-hover:text-white transition-colors"></i></div><span class="sidebar-text">Kunci Sesi</span></button>
         </div>
-        <div class="p-4 border-t border-border/50 bg-surface/50 lg:bg-surface shrink-0"><button id="pin-sidebar-btn" onclick="ui.toggleSidebarPin()" class="hidden lg:flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-textMuted hover:text-white hover:bg-white/5 mb-3 transition-all"><div class="w-6 h-6 flex items-center justify-center shrink-0"><i id="pin-icon" class="fa-solid fa-thumbtack -rotate-45 transition-transform duration-300"></i></div><span class="sidebar-text" id="pin-text">Pin Menu</span></button><button onclick="ui.openModal('modal-profile')" class="w-full flex items-center gap-3 p-2.5 rounded-xl bg-surface2 border border-border hover:border-primary/50 transition-all group text-left relative overflow-hidden"><div id="sidebar-avatar-bg" class="w-9 h-9 rounded-lg bg-gradient-to-tr from-primary to-accent flex items-center justify-center relative z-10 font-bold text-white shadow-lg shrink-0 text-sm"><span id="sidebar-avatar-text">D</span></div><div class="flex-1 min-w-0 relative z-10 sidebar-text"><p id="sidebar-name" class="text-sm font-bold text-white truncate group-hover:text-primary transition-colors">Dyerz User</p><p id="sidebar-level" class="text-[10px] text-textMuted truncate uppercase tracking-wider">Pro Account</p></div></button></div>
+        <div class="p-4 border-t border-border/50 bg-surface/50 lg:bg-surface shrink-0">
+            <button onclick="ui.openModal('modal-profile')" class="w-full flex items-center gap-3 p-2.5 rounded-xl bg-surface2 border border-border hover:border-primary/50 transition-all group text-left relative overflow-hidden"><div id="sidebar-avatar-bg" class="w-9 h-9 rounded-lg bg-gradient-to-tr from-primary to-accent flex items-center justify-center relative z-10 font-bold text-white shadow-lg shrink-0 text-sm"><span id="sidebar-avatar-text">D</span></div><div class="flex-1 min-w-0 relative z-10 sidebar-text"><p id="sidebar-name" class="text-sm font-bold text-white truncate group-hover:text-primary transition-colors">Dyerz User</p><p id="sidebar-level" class="text-[10px] text-textMuted truncate uppercase tracking-wider">Free Plan</p></div></button>
+        </div>
     </aside>
 
-    <!-- NEW MOBILE BOTTOM NAVIGATION (REPLACES SIDEBAR ON MOBILE) -->
-    <nav id="mobile-bottom-nav" class="fixed bottom-0 inset-x-0 z-[50] glass-nav h-[75px] pb-safe lg:hidden flex items-center justify-between px-2 shadow-nav transition-transform duration-300">
-        <button onclick="router.navigate('dashboard')" class="bottom-nav-item active" data-page="dashboard">
-            <i class="fa-solid fa-border-all text-xl mb-1"></i>
-            <span class="text-[10px] font-medium">Home</span>
-        </button>
-        <button onclick="router.navigate('wallet')" class="bottom-nav-item" data-page="wallet">
-            <i class="fa-solid fa-wallet text-xl mb-1"></i>
-            <span class="text-[10px] font-medium">Dompet</span>
-        </button>
-        
-        <!-- CENTER FLOATING BUTTON -->
-        <div class="relative -top-6">
-            <button onclick="ui.openModal('modal-add-transaction')" class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-accent text-white shadow-glow flex items-center justify-center text-xl transition-transform active:scale-95 hover:scale-110 border-4 border-surface">
-                <i class="fa-solid fa-plus"></i>
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav class="lg:hidden fixed bottom-0 left-0 w-full glass-nav z-40 pb-safe">
+        <div class="grid grid-cols-5 h-16 items-center px-2">
+            <button onclick="router.navigate('dashboard')" class="bottom-nav-item flex flex-col items-center justify-center gap-1 p-2 text-textMuted active" data-page="dashboard">
+                <i class="fa-solid fa-border-all text-xl mb-0.5"></i>
+                <span class="text-[9px] font-medium">Home</span>
+            </button>
+            <button onclick="router.navigate('wallet')" class="bottom-nav-item flex flex-col items-center justify-center gap-1 p-2 text-textMuted" data-page="wallet">
+                <i class="fa-solid fa-wallet text-xl mb-0.5"></i>
+                <span class="text-[9px] font-medium">Wallet</span>
+            </button>
+            <button onclick="ui.openModal('modal-add-transaction')" class="flex flex-col items-center justify-center -mt-6">
+                <div class="w-12 h-12 rounded-full bg-primary hover:bg-blue-600 text-white shadow-glow flex items-center justify-center transform active:scale-90 transition-all">
+                    <i class="fa-solid fa-plus text-xl"></i>
+                </div>
+                <span class="text-[9px] font-medium text-textMuted mt-1">Baru</span>
+            </button>
+            <button onclick="router.navigate('transactions')" class="bottom-nav-item flex flex-col items-center justify-center gap-1 p-2 text-textMuted" data-page="transactions">
+                <i class="fa-solid fa-list-check text-xl mb-0.5"></i>
+                <span class="text-[9px] font-medium">History</span>
+            </button>
+            <button onclick="ui.openModal('modal-menu')" class="bottom-nav-item flex flex-col items-center justify-center gap-1 p-2 text-textMuted">
+                <i class="fa-solid fa-bars text-xl mb-0.5"></i>
+                <span class="text-[9px] font-medium">Menu</span>
             </button>
         </div>
-
-        <button onclick="router.navigate('transactions')" class="bottom-nav-item" data-page="transactions">
-            <i class="fa-solid fa-arrow-right-arrow-left text-xl mb-1"></i>
-            <span class="text-[10px] font-medium">Riwayat</span>
-        </button>
-        <button onclick="ui.toggleMobileMenu()" class="bottom-nav-item" id="mobile-menu-trigger">
-            <i class="fa-solid fa-bars text-xl mb-1"></i>
-            <span class="text-[10px] font-medium">Menu</span>
-        </button>
     </nav>
 
-    <div id="main-wrapper" class="lg:pl-72 flex flex-col min-h-screen transition-all duration-300 pb-20 lg:pb-0">
-        <header class="sticky top-0 z-30 h-20 bg-surface/80 backdrop-blur-md border-b border-border/50 px-4 sm:px-8 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <!-- Hamburger Removed for Mobile as requested -->
-                <div class="lg:hidden flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-glow"><i class="fa-solid fa-coins text-white text-xs"></i></div>
-                    <span class="font-bold text-white text-lg tracking-tight">DYERZ</span>
-                </div>
-                <div class="hidden lg:block">
-                    <h2 id="page-title" class="text-lg font-bold text-white leading-none">Overview</h2>
-                    <div class="flex items-center gap-2 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-success animate-pulse"></span><p class="text-xs text-textMuted" id="current-date">...</p></div>
+    <div id="main-wrapper" class="lg:pl-72 flex flex-col min-h-screen transition-all duration-300">
+        <header class="sticky top-0 z-30 h-16 sm:h-20 bg-surface/80 backdrop-blur-md border-b border-border/50 px-4 sm:px-8 flex items-center justify-between">
+            <!-- MOBILE HEADER (PROFILE) -->
+            <div class="lg:hidden flex items-center gap-3 w-full">
+                <div onclick="ui.openModal('modal-profile')" class="flex items-center gap-3 cursor-pointer active:opacity-70 transition-opacity">
+                    <div id="mobile-header-avatar-bg" class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center relative z-10 font-bold text-white shadow-lg shrink-0 text-sm overflow-hidden bg-center bg-cover border border-white/10">
+                        <span id="mobile-header-avatar-text">?</span>
+                    </div>
+                    <div class="flex flex-col justify-center">
+                        <h2 id="mobile-header-name" class="text-sm font-bold text-white leading-tight">Pengguna Baru</h2>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-success animate-pulse"></span>
+                            <p id="mobile-header-level" class="text-[10px] text-textMuted font-medium uppercase tracking-wider">Free Plan</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="hidden md:flex items-center px-4 py-2.5 bg-surface2 border border-border rounded-full w-64 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/50 transition-all group"><i class="fa-solid fa-magnifying-glass text-textMuted text-xs mr-3 group-focus-within:text-primary transition-colors"></i><input type="text" id="global-search" onkeyup="handlers.search(this.value)" placeholder="Cari data..." class="bg-transparent border-none outline-none text-sm text-white w-full placeholder-textMuted/50"><div id="search-results" class="absolute top-14 left-0 w-full bg-surface2 border border-border rounded-xl shadow-2xl p-2 hidden z-50"></div></div>
-                <div class="relative"><button onclick="ui.toggleNotifications()" class="w-10 h-10 rounded-full bg-surface2 border border-border flex items-center justify-center text-textMuted hover:text-white hover:border-warning/50 transition-all relative"><i class="fa-regular fa-bell"></i><span id="notif-dot" class="absolute top-2.5 right-3 w-2 h-2 bg-danger rounded-full hidden border border-black"></span></button><div id="notification-panel" class="absolute right-0 top-12 w-80 bg-surface2 border border-border rounded-2xl shadow-2xl p-4 hidden transform transition-all z-50 origin-top-right scale-95 opacity-0 backdrop-blur-xl"><div class="flex justify-between items-center mb-3 pb-2 border-b border-white/5"><h4 class="text-sm font-bold text-white">Notifikasi</h4><button onclick="ui.clearNotifications()" class="text-[10px] text-primary hover:text-white transition-colors">Hapus Semua</button></div><div id="notification-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 scrollbar-hide"><p class="text-center text-xs text-textMuted py-4">Tidak ada notifikasi baru</p></div></div></div>
+
+            <!-- DESKTOP HEADER -->
+            <div class="hidden lg:flex items-center gap-4">
+                <div><h2 id="page-title" class="text-lg font-bold text-white leading-none">Overview</h2><div class="flex items-center gap-2 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-success animate-pulse"></span><p class="text-xs text-textMuted" id="current-date">...</p></div></div>
+            </div>
+
+            <div class="flex items-center gap-4 ml-auto lg:ml-0">
+                <div class="relative">
+                    <button onclick="ui.toggleNotifications()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-surface2 border border-border flex items-center justify-center text-textMuted hover:text-white hover:border-warning/50 transition-all relative">
+                        <i class="fa-regular fa-bell"></i>
+                        <span id="notif-dot" class="absolute top-2 right-2.5 w-2 h-2 bg-danger rounded-full hidden border border-black"></span>
+                    </button>
+                    <!-- Notification Panel -->
+                    <div id="notification-panel" class="absolute right-0 top-12 w-80 bg-surface2 border border-border rounded-2xl shadow-2xl p-4 hidden transform transition-all z-50 origin-top-right scale-95 opacity-0 backdrop-blur-xl">
+                        <div class="flex justify-between items-center mb-3 pb-2 border-b border-white/5"><h4 class="text-sm font-bold text-white">Notifikasi</h4><button onclick="ui.clearNotifications()" class="text-[10px] text-primary hover:text-white transition-colors">Hapus Semua</button></div>
+                        <div id="notification-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 scrollbar-hide"><p class="text-center text-xs text-textMuted py-4">Tidak ada notifikasi baru</p></div>
+                    </div>
+                </div>
             </div>
         </header>
 
         <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full transition-all">
             <!-- DASHBOARD -->
-            <div id="view-dashboard" class="page-view space-y-8 animate-slide-up"><div id="welcome-banner" class="hidden relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary/10 to-accent/10 border border-white/5 p-8 group"><div class="relative z-10 max-w-2xl"><h2 class="text-3xl font-bold text-white mb-2">Halo, <span id="banner-name" class="text-primary">Dyerz</span>! 👋</h2><p class="text-textMuted mb-6 text-sm leading-relaxed">Selamat datang di DYERZ.LTD. Keuangan Anda belum tercatat.</p><button onclick="ui.openModal('modal-add-transaction')" class="px-6 py-3 bg-white text-black font-bold rounded-xl hover:scale-105 transition-transform shadow-lg flex items-center gap-2"><i class="fa-solid fa-plus"></i> Catat Transaksi</button></div><div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/30 transition-colors duration-500"></div></div><div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"><div class="glass-solid p-6 rounded-3xl hover-card group cursor-default"><div class="flex justify-between items-start mb-8 relative z-10"><div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-wallet text-xl"></i></div><span class="px-2.5 py-1 rounded-full bg-surface border border-border text-[10px] font-mono text-textMuted">NET WORTH</span></div><div class="relative z-10"><div class="flex items-center gap-2 mb-1"><p class="text-textMuted text-xs font-medium uppercase tracking-wider">Total Kekayaan</p><button onclick="ui.togglePrivacy()" class="text-textMuted hover:text-white transition-colors focus:outline-none" title="Sembunyikan/Tampilkan Saldo"><i id="privacy-icon" class="fa-solid fa-eye"></i></button></div><h3 class="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-none" id="dash-balance">Rp 0</h3></div><div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div></div><div class="glass-solid p-6 rounded-3xl hover-card group cursor-default"><div class="flex justify-between items-start mb-8 relative z-10"><div class="w-12 h-12 rounded-2xl bg-success/10 flex items-center justify-center text-success border border-success/20 group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-arrow-trend-up text-xl"></i></div><span class="px-2.5 py-1 rounded-full bg-surface border border-border text-[10px] font-mono text-textMuted">MONTHLY</span></div><div class="relative z-10"><p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-1">Pemasukan</p><h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-none" id="dash-income">Rp 0</h3></div><div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-success to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div></div><div class="glass-solid p-6 rounded-3xl hover-card group cursor-default"><div class="flex justify-between items-start mb-8 relative z-10"><div class="w-12 h-12 rounded-2xl bg-danger/10 flex items-center justify-center text-danger border border-danger/20 group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-arrow-trend-down text-xl"></i></div><span class="px-2.5 py-1 rounded-full bg-surface border border-border text-[10px] font-mono text-textMuted">MONTHLY</span></div><div class="relative z-10"><p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-1">Pengeluaran</p><h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-none" id="dash-expense">Rp 0</h3></div><div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-danger to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div></div></div><div class="grid grid-cols-1 xl:grid-cols-3 gap-6 sm:gap-8"><div class="xl:col-span-2 glass-solid rounded-3xl p-6 sm:p-8 border border-border/50"><div class="flex justify-between items-center mb-8"><div><h3 class="font-bold text-xl text-white">Analisis Arus Kas</h3><p class="text-xs text-textMuted mt-1">Ringkasan 7 hari terakhir</p></div><div class="flex gap-2"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="text-[10px] text-primary font-mono">LIVE UPDATE</span></div></div><div class="h-[300px] w-full relative"><canvas id="mainChart"></canvas></div></div><div class="glass-solid rounded-3xl p-6 border border-border/50 flex flex-col h-[450px] xl:h-auto"><div class="flex justify-between items-center mb-6"><h3 class="font-bold text-xl text-white">Riwayat</h3><button onclick="router.navigate('transactions')" class="text-xs text-primary hover:text-white transition-colors">Lihat Semua</button></div><div id="dash-recent-list" class="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin"></div></div></div></div>
+            <div id="view-dashboard" class="page-view space-y-8 animate-slide-up">
+                <div id="welcome-banner" class="hidden relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary/10 to-accent/10 border border-white/5 p-6 sm:p-8 group">
+                    <div class="relative z-10 max-w-2xl"><h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">Halo, <span id="banner-name" class="text-primary">Pengguna Baru</span>! 👋</h2><p class="text-textMuted mb-6 text-xs sm:text-sm leading-relaxed">Selamat datang di DYERZ.LTD. Keuangan Anda belum tercatat.</p><button onclick="ui.openModal('modal-add-transaction')" class="px-6 py-3 bg-white text-black font-bold rounded-xl hover:scale-105 transition-transform shadow-lg flex items-center gap-2 text-sm"><i class="fa-solid fa-plus"></i> Catat Transaksi</button></div>
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/30 transition-colors duration-500"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                    <div class="glass-solid p-6 rounded-3xl hover-card group cursor-default">
+                        <div class="flex justify-between items-start mb-8 relative z-10"><div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-wallet text-xl"></i></div><span class="px-2.5 py-1 rounded-full bg-surface border border-border text-[10px] font-mono text-textMuted">NET WORTH</span></div>
+                        <div class="relative z-10"><div class="flex items-center gap-2 mb-1"><p class="text-textMuted text-xs font-medium uppercase tracking-wider">Total Kekayaan</p><button onclick="ui.togglePrivacy()" class="text-textMuted hover:text-white transition-colors focus:outline-none"><i id="privacy-icon" class="fa-solid fa-eye"></i></button></div><h3 class="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-none" id="dash-balance">Rp 0</h3></div>
+                    </div>
+                    <div class="glass-solid p-6 rounded-3xl hover-card group cursor-default">
+                        <div class="flex justify-between items-start mb-8 relative z-10"><div class="w-12 h-12 rounded-2xl bg-success/10 flex items-center justify-center text-success border border-success/20 group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-arrow-trend-up text-xl"></i></div><span class="px-2.5 py-1 rounded-full bg-surface border border-border text-[10px] font-mono text-textMuted">MONTHLY</span></div>
+                        <div class="relative z-10"><p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-1">Pemasukan</p><h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-none" id="dash-income">Rp 0</h3></div>
+                    </div>
+                    <div class="glass-solid p-6 rounded-3xl hover-card group cursor-default">
+                        <div class="flex justify-between items-start mb-8 relative z-10"><div class="w-12 h-12 rounded-2xl bg-danger/10 flex items-center justify-center text-danger border border-danger/20 group-hover:scale-110 transition-transform duration-300"><i class="fa-solid fa-arrow-trend-down text-xl"></i></div><span class="px-2.5 py-1 rounded-full bg-surface border border-border text-[10px] font-mono text-textMuted">MONTHLY</span></div>
+                        <div class="relative z-10"><p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-1">Pengeluaran</p><h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-none" id="dash-expense">Rp 0</h3></div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 sm:gap-8">
+                    <div class="xl:col-span-2 glass-solid rounded-3xl p-6 sm:p-8 border border-border/50"><div class="flex justify-between items-center mb-8"><div><h3 class="font-bold text-xl text-white">Analisis Arus Kas</h3><p class="text-xs text-textMuted mt-1">Ringkasan 7 hari terakhir</p></div><div class="flex gap-2"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="text-[10px] text-primary font-mono">LIVE UPDATE</span></div></div><div class="h-[250px] sm:h-[300px] w-full relative"><canvas id="mainChart"></canvas></div></div>
+                    <div class="glass-solid rounded-3xl p-6 border border-border/50 flex flex-col h-auto"><div class="flex justify-between items-center mb-6"><h3 class="font-bold text-xl text-white">Riwayat</h3><button onclick="router.navigate('transactions')" class="text-xs text-primary hover:text-white transition-colors">Lihat Semua</button></div><div id="dash-recent-list" class="flex-1 space-y-3"></div></div>
+                </div>
+            </div>
             
             <!-- WALLET -->
             <div id="view-wallet" class="page-view hidden space-y-8 animate-slide-up"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"><div><h3 class="text-2xl font-bold text-white">Dompet Digital</h3><p class="text-textMuted text-xs mt-1">Kelola kartu dan aset digital Anda.</p></div><button onclick="ui.openModal('modal-add-card')" class="px-5 py-2.5 bg-gold hover:bg-yellow-600 text-black rounded-xl text-sm font-bold shadow-lg transition-all active:scale-95 flex items-center gap-2"><i class="fa-solid fa-plus"></i> Tambah Kartu</button></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-8"><div class="space-y-6" id="wallet-cards-container"></div><div class="glass-solid p-6 rounded-3xl border border-border/50"><h4 class="font-bold text-white mb-4">Statistik Dompet</h4><div class="grid grid-cols-2 gap-4 mb-6"><div class="p-4 rounded-2xl bg-surface2 border border-border"><p class="text-[10px] text-textMuted uppercase font-bold">Total Kartu</p><p class="text-2xl font-bold text-white mt-1" id="wallet-total-cards">0</p></div><div class="p-4 rounded-2xl bg-surface2 border border-border"><p class="text-[10px] text-textMuted uppercase font-bold">Total Saldo Kartu</p><p class="text-xl font-bold text-gold mt-1 truncate" id="wallet-total-balance">Rp 0</p></div></div><div class="p-4 rounded-2xl bg-primary/10 border border-primary/20 flex gap-4 items-center"><div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary"><i class="fa-solid fa-circle-info"></i></div><p class="text-xs text-textMuted leading-relaxed">Saldo pada kartu dihitung sebagai bagian dari Total Kekayaan (Net Worth) Anda di dashboard utama.</p></div></div></div></div>
@@ -216,37 +253,30 @@
         </main>
     </div>
 
-    <!-- NEW MOBILE MENU MODAL (SHEET) -->
-    <div id="modal-mobile-menu" class="modal fixed inset-0 z-[60] flex items-end justify-center opacity-0 pointer-events-none transition-all duration-300 lg:hidden">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="ui.toggleMobileMenu()"></div>
-        <div class="bg-surface2 border-t border-border w-full p-6 rounded-t-3xl relative transform translate-y-full transition-all duration-300 shadow-2xl">
-            <div class="flex justify-center mb-4"><div class="w-12 h-1.5 bg-white/10 rounded-full"></div></div>
-            <div class="grid grid-cols-4 gap-4 mb-4">
-                <button onclick="router.navigate('goals'); ui.toggleMobileMenu()" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface border border-border active:scale-95 transition-transform">
-                    <div class="w-10 h-10 rounded-full bg-accent/10 text-accent flex items-center justify-center"><i class="fa-solid fa-bullseye"></i></div>
-                    <span class="text-[10px] font-bold text-white">Target</span>
+    <!-- MOBILE MENU MODAL -->
+    <div id="modal-menu" class="modal fixed inset-0 z-[60] flex items-end justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="ui.closeModal('modal-menu')"></div>
+        <div class="bg-surface2 border-t border-border w-full p-6 rounded-t-[2rem] relative transform translate-y-full transition-all duration-300 shadow-2xl pb-10">
+            <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-6"></div>
+            <h3 class="text-xl font-bold text-white mb-6 px-2">Menu Lainnya</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="router.navigate('budget'); ui.closeModal('modal-menu')" class="p-4 bg-surface border border-border rounded-2xl flex flex-col items-center gap-3 hover:bg-white/5 active:scale-95 transition-all">
+                    <div class="w-12 h-12 rounded-full bg-warning/10 text-warning flex items-center justify-center text-xl"><i class="fa-solid fa-chart-pie"></i></div>
+                    <span class="font-bold text-sm text-white">Budget</span>
                 </button>
-                <button onclick="router.navigate('budget'); ui.toggleMobileMenu()" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface border border-border active:scale-95 transition-transform">
-                    <div class="w-10 h-10 rounded-full bg-warning/10 text-warning flex items-center justify-center"><i class="fa-solid fa-chart-pie"></i></div>
-                    <span class="text-[10px] font-bold text-white">Budget</span>
+                <button onclick="router.navigate('goals'); ui.closeModal('modal-menu')" class="p-4 bg-surface border border-border rounded-2xl flex flex-col items-center gap-3 hover:bg-white/5 active:scale-95 transition-all">
+                    <div class="w-12 h-12 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xl"><i class="fa-solid fa-bullseye"></i></div>
+                    <span class="font-bold text-sm text-white">Target</span>
                 </button>
-                <button onclick="router.navigate('settings'); ui.toggleMobileMenu()" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface border border-border active:scale-95 transition-transform">
-                    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center"><i class="fa-solid fa-sliders"></i></div>
-                    <span class="text-[10px] font-bold text-white">Atur</span>
+                <button onclick="router.navigate('settings'); ui.closeModal('modal-menu')" class="p-4 bg-surface border border-border rounded-2xl flex flex-col items-center gap-3 hover:bg-white/5 active:scale-95 transition-all">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xl"><i class="fa-solid fa-sliders"></i></div>
+                    <span class="font-bold text-sm text-white">Pengaturan</span>
                 </button>
-                <button onclick="security.lockApp(); ui.toggleMobileMenu()" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface border border-border active:scale-95 transition-transform">
-                    <div class="w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center"><i class="fa-solid fa-lock"></i></div>
-                    <span class="text-[10px] font-bold text-white">Kunci</span>
+                <button onclick="security.lockApp(); ui.closeModal('modal-menu')" class="p-4 bg-surface border border-border rounded-2xl flex flex-col items-center gap-3 hover:bg-white/5 active:scale-95 transition-all">
+                    <div class="w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center text-xl"><i class="fa-solid fa-lock"></i></div>
+                    <span class="font-bold text-sm text-white">Kunci</span>
                 </button>
             </div>
-            <button onclick="ui.openModal('modal-profile'); ui.toggleMobileMenu()" class="w-full flex items-center gap-3 p-3 rounded-xl bg-surface border border-border mb-4">
-                <div id="menu-avatar-bg" class="w-10 h-10 rounded-lg bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white font-bold">D</div>
-                <div class="text-left">
-                    <p class="text-sm font-bold text-white">Profile Saya</p>
-                    <p class="text-[10px] text-textMuted">Edit identitas & akun</p>
-                </div>
-                <i class="fa-solid fa-chevron-right ml-auto text-textMuted"></i>
-            </button>
         </div>
     </div>
 
@@ -279,8 +309,6 @@
         </div>
     </div>
     
-    <!-- Floating Button removed as it is now integrated in Bottom Nav -->
-
     <script>
         const DB_KEY = 'dyerz_ltd_v30_final_db';
         const SETTINGS_KEY = 'dyerz_ltd_v30_final_settings';
@@ -292,7 +320,8 @@
         const initialState = { 
             transactions: [], goals: [], 
             notifications: [{id: Date.now(), title: 'Selamat Datang!', msg: 'Selamat bergabung di DYERZ.LTD', read: false, time: new Date().toISOString()}], 
-            profile: { name: 'Dyerz User', level: 'Free Plan', email: '', bio: '', photo: null, avatarColor: 'blue' }, 
+            // DEFAULT USER CHANGE: 'Pengguna Baru' and 'Free Plan'
+            profile: { name: 'Pengguna Baru', level: 'Free Plan', email: '', bio: '', photo: null, avatarColor: 'blue' }, 
             cards: [] 
         };
         const initialSettings = { budgetLimit: 0, security: { pin: null, bioEnabled: false }, sidebarPinned: false, privacyMode: false };
@@ -302,29 +331,17 @@
         if(!settings.security) settings.security = { pin: null, bioEnabled: false };
         if(!db.notifications) db.notifications = initialState.notifications;
         if(!db.cards) db.cards = [];
+        if(!db.profile) db.profile = initialState.profile; // Fallback
 
         let currentFilter = 'all';
         let longPressTimer;
-        let currentGoalId = null; // Store ID for funding goal
+        let currentGoalId = null;
 
         const sidebarSys = {
             el: null, mainWrapper: null, isPinned: false,
             init: () => {
                 sidebarSys.el = document.getElementById('sidebar'); sidebarSys.mainWrapper = document.getElementById('main-wrapper');
-                // Ensure elements exist before adding listeners (important for mobile where sidebar might be hidden)
-                if(!sidebarSys.el) return;
-                
-                sidebarSys.isPinned = !!settings.sidebarPinned; sidebarSys.updateState();
-                if(window.innerWidth >= 1024) { sidebarSys.el.addEventListener('mouseenter', sidebarSys.onEnter); sidebarSys.el.addEventListener('mouseleave', sidebarSys.onLeave); }
-                window.addEventListener('resize', () => { if(window.innerWidth < 1024) { sidebarSys.el.style.width = ''; sidebarSys.mainWrapper.style.paddingLeft = '0'; sidebarSys.el.classList.remove('collapsed'); } else { sidebarSys.updateState(); } });
-                const icon = document.getElementById('pin-icon'); const text = document.getElementById('pin-text'); if(sidebarSys.isPinned && icon) { icon.classList.remove('-rotate-45'); if(text) text.innerText = "Unpin Menu"; }
-            },
-            togglePin: () => { sidebarSys.isPinned = !sidebarSys.isPinned; settings.sidebarPinned = sidebarSys.isPinned; utils.save(); const icon = document.getElementById('pin-icon'); const text = document.getElementById('pin-text'); if(sidebarSys.isPinned) { icon.classList.remove('-rotate-45'); text.innerText = "Unpin Menu"; ui.showToast("Menu Dikunci"); } else { icon.classList.add('-rotate-45'); text.innerText = "Pin Menu"; ui.showToast("Mode Auto-Hover"); } sidebarSys.updateState(); },
-            onEnter: () => { if(!sidebarSys.isPinned) sidebarSys.expand(); },
-            onLeave: () => { if(!sidebarSys.isPinned) sidebarSys.collapse(); },
-            updateState: () => { if(window.innerWidth < 1024) return; if(sidebarSys.isPinned) { sidebarSys.expand(); } else { sidebarSys.collapse(); } },
-            expand: () => { sidebarSys.el.classList.remove('w-20', 'collapsed'); sidebarSys.el.classList.add('w-72'); sidebarSys.mainWrapper.classList.remove('lg:pl-20'); sidebarSys.mainWrapper.classList.add('lg:pl-72'); },
-            collapse: () => { sidebarSys.el.classList.remove('w-72'); sidebarSys.el.classList.add('w-20', 'collapsed'); sidebarSys.mainWrapper.classList.remove('lg:pl-72'); sidebarSys.mainWrapper.classList.add('lg:pl-20'); }
+            }
         };
 
         const security = {
@@ -364,24 +381,15 @@
         };
 
         const ui = {
-            toggleMobileMenu: () => { 
-                const m = document.getElementById('modal-mobile-menu');
-                const trigger = document.getElementById('mobile-menu-trigger');
-                if(m.classList.contains('pointer-events-none')) {
-                    // Open
-                    m.classList.remove('opacity-0', 'pointer-events-none');
-                    m.querySelector('.transform').classList.remove('translate-y-full');
-                    trigger.classList.add('active');
-                } else {
-                    // Close
-                    m.classList.add('opacity-0', 'pointer-events-none');
-                    m.querySelector('.transform').classList.add('translate-y-full');
-                    trigger.classList.remove('active');
-                }
-            },
-            toggleSidebarPin: () => { sidebarSys.togglePin(); },
+            toggleMobileSidebar: () => { /* No longer used */ },
             openModal: (id) => { 
-                const m=document.getElementById(id); m.classList.remove('opacity-0','pointer-events-none'); m.querySelector('.transform').classList.remove('scale-95'); m.querySelector('.transform').classList.add('scale-100'); 
+                const m=document.getElementById(id); m.classList.remove('opacity-0','pointer-events-none'); 
+                const content = m.querySelector('.transform');
+                if(content) {
+                    content.classList.remove(id === 'modal-menu' ? 'translate-y-full' : 'scale-95'); 
+                    content.classList.add(id === 'modal-menu' ? 'translate-y-0' : 'scale-100'); 
+                }
+                
                 if(id==='modal-add-transaction'){document.querySelector('input[name="date"]').valueAsDate=new Date();ui.updateCategoryOptions('income');} 
                 if(id==='modal-profile'){
                     document.getElementById('input-profile-name').value=db.profile.name;
@@ -395,7 +403,15 @@
                 }
                 ui.attachCurrencyListeners(); ui.attachCardListeners(); 
             },
-            closeModal: (id) => { const m=document.getElementById(id); m.classList.add('opacity-0','pointer-events-none'); m.querySelector('.transform').classList.remove('scale-100'); m.querySelector('.transform').classList.add('scale-95'); const f=m.querySelector('form'); if(f)f.reset(); },
+            closeModal: (id) => { 
+                const m=document.getElementById(id); m.classList.add('opacity-0','pointer-events-none'); 
+                const content = m.querySelector('.transform');
+                if(content) {
+                    content.classList.remove(id === 'modal-menu' ? 'translate-y-0' : 'scale-100'); 
+                    content.classList.add(id === 'modal-menu' ? 'translate-y-full' : 'scale-95'); 
+                }
+                const f=m.querySelector('form'); if(f)f.reset(); 
+            },
             showToast: (m,t='success') => { const c=document.getElementById('toast-container'); const el=document.createElement('div'); el.className=`toast pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl bg-surface2 border ${t==='success'?'border-success/30':'border-danger/30'} text-xs font-bold text-white shadow-xl min-w-[280px]`; el.innerHTML=`<i class="fa-solid ${t==='success'?'fa-circle-check text-success':'fa-circle-exclamation text-danger'}"></i><span>${m}</span>`; c.appendChild(el); setTimeout(()=>{el.classList.add('hiding');el.addEventListener('animationend',()=>el.remove());},3000); },
             updateCategoryOptions: (t) => { const s=document.getElementById('trx-category-select'); s.innerHTML=''; (t==='income'?['Gaji','Bonus','Investasi','Penjualan','Lainnya']:['Makanan','Transportasi','Belanja','Tagihan','Hiburan','Kesehatan','Investasi','Lainnya']).forEach(c=>{const o=document.createElement('option');o.value=c;o.innerText=c;s.appendChild(o);}); },
             attachCurrencyListeners: () => { document.querySelectorAll('.currency-input').forEach(i => { i.oninput = function(e) { let val = e.target.value.replace(/\D/g, ''); if(val === "") { e.target.value = ""; return; } e.target.value = new Intl.NumberFormat('id-ID').format(val); }; }); },
@@ -422,14 +438,11 @@
 
         const router = {
             navigate: (page) => {
-                // Update Sidebar (Desktop)
+                // Sidebar Active State (Desktop)
                 document.querySelectorAll('.nav-item').forEach(el => { const active = el.dataset.page === page; el.classList.toggle('bg-white/5', active); el.classList.toggle('text-white', active); el.classList.toggle('text-textMuted', !active); });
                 
-                // Update Bottom Nav (Mobile)
-                document.querySelectorAll('.bottom-nav-item').forEach(el => { 
-                    const active = el.dataset.page === page; 
-                    el.classList.toggle('active', active); 
-                });
+                // Bottom Nav Active State (Mobile)
+                document.querySelectorAll('.bottom-nav-item').forEach(el => { const active = el.dataset.page === page; el.classList.toggle('active', active); el.classList.toggle('text-white', active); el.classList.toggle('text-textMuted', !active); });
 
                 document.getElementById('page-title').innerText = page.charAt(0).toUpperCase() + page.slice(1);
                 document.querySelectorAll('.page-view').forEach(v => { v.classList.add('hidden'); v.classList.remove('animate-slide-up'); });
@@ -591,7 +604,6 @@
                 chartSys.inst.data.datasets[0].data = inc; 
                 chartSys.inst.data.datasets[1].data = exp;
                 chartSys.inst.data.datasets[2].data = net;
-                chartSys.inst.data.labels = dates.map(d => new Date(d).toLocaleDateString('id-ID', {weekday:'short'}));
                 chartSys.inst.update();
             }
         };
@@ -607,37 +619,57 @@
                 sidebarSys.init(); chartSys.init(); ui.attachCurrencyListeners(); ui.attachCardListeners();
                 ui.updatePrivacyIcon();
                 app.refresh();
-                
-                // Set default active tab
-                document.querySelectorAll('.bottom-nav-item[data-page="dashboard"]').forEach(e => e.classList.add('active'));
             },
             hideStartup: () => { const s = document.getElementById('startup-screen'); const l = document.getElementById('loader-progress'); const t = document.getElementById('startup-text'); if(!s) return; l.style.width = '100%'; if(t) t.innerText = "SYSTEM READY"; setTimeout(() => { s.style.opacity = '0'; s.style.pointerEvents = 'none'; setTimeout(() => { s.style.visibility = 'hidden'; }, 500); }, 500); },
             refresh: () => {
-                if(!db.profile) db.profile = { name: 'Dyerz User', level: 'Free Plan', avatarColor: 'blue' };
+                if(!db.profile) db.profile = { name: 'Pengguna Baru', level: 'Free Plan', avatarColor: 'blue' };
+                
+                // --- UPDATE SIDEBAR (DESKTOP) ---
                 document.getElementById('sidebar-name').innerText = db.profile.name;
-                document.getElementById('banner-name').innerText = db.profile.name.split(' ')[0];
+                document.getElementById('sidebar-level').innerText = db.profile.level;
                 document.getElementById('sidebar-avatar-text').innerText = db.profile.name.charAt(0).toUpperCase();
                 
-                // Update profile in mobile menu as well if element exists
-                const menuAvatarBg = document.getElementById('menu-avatar-bg');
-                if(menuAvatarBg) {
+                const sbAvatarBg = document.getElementById('sidebar-avatar-bg');
+                const sbAvatarTxt = document.getElementById('sidebar-avatar-text');
+                
+                const gradClass = utils.getAvatarGradient(db.profile.avatarColor);
+                
+                if(db.profile.photo) { 
+                    sbAvatarBg.style.backgroundImage = `url(${db.profile.photo})`; sbAvatarBg.style.backgroundSize = 'cover'; 
+                    sbAvatarTxt.classList.add('hidden'); 
+                    sbAvatarBg.classList.remove(...sbAvatarBg.classList); // Clean classes
+                    sbAvatarBg.classList.add('w-9','h-9','rounded-lg','relative','z-10','shadow-lg','shrink-0');
+                } else { 
+                    sbAvatarBg.style.backgroundImage = ''; 
+                    sbAvatarTxt.classList.remove('hidden'); 
+                    sbAvatarBg.className = `w-9 h-9 rounded-lg flex items-center justify-center relative z-10 font-bold text-white shadow-lg shrink-0 text-sm ${gradClass}`; 
+                }
+
+                // --- UPDATE HEADER (MOBILE) ---
+                const mobName = document.getElementById('mobile-header-name');
+                const mobLevel = document.getElementById('mobile-header-level');
+                const mobAvatarBg = document.getElementById('mobile-header-avatar-bg');
+                const mobAvatarTxt = document.getElementById('mobile-header-avatar-text');
+
+                if(mobName) mobName.innerText = db.profile.name;
+                if(mobLevel) mobLevel.innerText = db.profile.level;
+                if(mobAvatarTxt) mobAvatarTxt.innerText = db.profile.name.charAt(0).toUpperCase();
+                
+                if(mobAvatarBg) {
                     if(db.profile.photo) {
-                         menuAvatarBg.style.backgroundImage = `url(${db.profile.photo})`; 
-                         menuAvatarBg.style.backgroundSize = 'cover'; 
-                         menuAvatarBg.innerText = '';
-                         menuAvatarBg.classList.remove(utils.getAvatarGradient(db.profile.avatarColor));
+                         mobAvatarBg.style.backgroundImage = `url(${db.profile.photo})`;
+                         mobAvatarTxt.classList.add('hidden');
+                         mobAvatarBg.classList.remove('bg-gradient-to-tr', 'from-primary', 'to-accent'); // remove default gradient
                     } else {
-                         menuAvatarBg.style.backgroundImage = ''; 
-                         menuAvatarBg.innerText = db.profile.name.charAt(0).toUpperCase();
-                         menuAvatarBg.className = `w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold ${utils.getAvatarGradient(db.profile.avatarColor)}`;
+                        mobAvatarBg.style.backgroundImage = '';
+                        mobAvatarTxt.classList.remove('hidden');
+                        mobAvatarBg.className = `w-10 h-10 rounded-full flex items-center justify-center relative z-10 font-bold text-white shadow-lg shrink-0 text-sm overflow-hidden bg-center bg-cover border border-white/10 ${gradClass}`;
                     }
                 }
 
-                const sbAvatarBg = document.getElementById('sidebar-avatar-bg');
-                const sbAvatarTxt = document.getElementById('sidebar-avatar-text');
-                if(db.profile.photo) { sbAvatarBg.style.backgroundImage = `url(${db.profile.photo})`; sbAvatarBg.style.backgroundSize = 'cover'; sbAvatarTxt.classList.add('hidden'); sbAvatarBg.classList.remove(utils.getAvatarGradient(db.profile.avatarColor)); } else { sbAvatarBg.style.backgroundImage = ''; sbAvatarTxt.classList.remove('hidden'); sbAvatarBg.className = `w-9 h-9 rounded-lg flex items-center justify-center relative z-10 font-bold text-white shadow-lg shrink-0 text-sm ${utils.getAvatarGradient(db.profile.avatarColor)}`; }
-                document.getElementById('sidebar-level').innerText = db.profile.level;
-                
+                // --- BANNER UPDATE ---
+                document.getElementById('banner-name').innerText = db.profile.name.split(' ')[0];
+
                 const now = new Date(); let i=0, e=0, b=0;
                 db.transactions.forEach(t => { if(t.type==='income') b+=t.amount; else b-=t.amount; const d=new Date(t.date); if(d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear()) { if(t.type==='income') i+=t.amount; else e+=t.amount; } });
                 
@@ -657,45 +689,40 @@
                 let d = cd || [...db.transactions].sort((a,b)=>new Date(b.date)-new Date(a.date));
                 if(currentFilter!=='all' && !cd) d=d.filter(t=>t.type===currentFilter);
                 
-                // Desktop
                 const tb = document.getElementById('transaction-table-body'); 
                 if(tb) tb.innerHTML='';
                 
-                // Mobile & Dashboard List
                 const mobList = document.getElementById('transaction-mobile-list'); 
                 if(mobList) mobList.innerHTML = '';
                 
                 const dashList = document.getElementById('dash-recent-list');
                 if(dashList) dashList.innerHTML = '';
 
-                if(d.length===0 && dashList) dashList.innerHTML=`<div class="h-full flex flex-col items-center justify-center text-textMuted opacity-50"><i class="fa-solid fa-receipt text-2xl mb-2"></i><p class="text-xs">Belum ada data</p></div>`;
+                if(d.length===0 && dashList) dashList.innerHTML=`<div class="h-full flex flex-col items-center justify-center text-textMuted opacity-50 py-10"><i class="fa-solid fa-receipt text-2xl mb-2"></i><p class="text-xs">Belum ada data</p></div>`;
 
                 d.forEach((t, index) => { 
                     const inc=t.type==='income'; 
                     const icon = utils.getIcon(t.category);
                     
-                    // Desktop Table Row
                     if(tb) {
                         tb.innerHTML+=`<tr class="hover:bg-white/5 transition-colors group"><td class="px-6 py-4 text-textMuted font-mono text-xs">${utils.formatDate(t.date)}</td><td class="px-6 py-4"><span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg ${inc?'bg-success/10 text-success':'bg-white/10 text-white'}">${t.category}</span></td><td class="px-6 py-4 font-bold text-white">${t.desc}</td><td class="px-6 py-4 font-bold text-right ${inc?'text-success':'text-danger'}">${inc?'+':'-'} ${utils.formatIDR(t.amount)}</td><td class="px-6 py-4 text-center"><button onclick="handlers.deleteItem('trx','${t.id}')" class="p-2 text-textMuted hover:text-danger hover:bg-danger/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
                     }
 
-                    // Mobile Card
                     if(mobList) {
                         mobList.innerHTML+=`
-                        <div class="p-4 rounded-2xl bg-surface2 border border-white/5 hover:border-white/10 transition-all">
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-full ${inc?'bg-success/10 text-success':'bg-white/5 text-white'} flex items-center justify-center shrink-0"><i class="fa-solid ${icon}"></i></div>
-                                    <div><h4 class="text-sm font-bold text-white">${t.desc}</h4><p class="text-xs text-textMuted">${utils.formatDate(t.date)} • ${t.category}</p></div>
-                                </div>
-                                <button onclick="handlers.deleteItem('trx','${t.id}')" class="text-textMuted hover:text-danger p-2"><i class="fa-solid fa-trash-can"></i></button>
+                        <div class="p-4 rounded-2xl bg-surface2 border border-white/5 hover:border-white/10 transition-all flex justify-between items-center group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full ${inc?'bg-success/10 text-success':'bg-white/5 text-white'} flex items-center justify-center shrink-0 border border-white/5"><i class="fa-solid ${icon}"></i></div>
+                                <div><h4 class="text-sm font-bold text-white mb-0.5">${t.desc}</h4><p class="text-[10px] text-textMuted uppercase tracking-wide">${utils.formatDate(t.date)} • ${t.category}</p></div>
                             </div>
-                            <div class="flex justify-between items-end"><span class="text-[10px] px-2 py-1 rounded bg-black/50 text-textMuted uppercase tracking-wider">${inc ? 'Pemasukan' : 'Pengeluaran'}</span><span class="text-lg font-bold ${inc?'text-success':'text-danger'}">${inc?'+':'-'} ${utils.formatIDR(t.amount)}</span></div>
+                            <div class="text-right">
+                                <p class="text-sm font-bold ${inc?'text-success':'text-danger'}">${inc?'+':'-'} ${utils.formatIDR(t.amount)}</p>
+                                <button onclick="handlers.deleteItem('trx','${t.id}')" class="text-[10px] text-textMuted hover:text-danger mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Hapus</button>
+                            </div>
                         </div>`; 
                     }
 
-                    // Dashboard Recent List (Limit to top 10 or fit scrolling)
-                    if(dashList && index < 10) {
+                    if(dashList && index < 6) {
                          dashList.innerHTML+=`
                             <div class="flex items-center justify-between p-3 rounded-xl bg-surface2/50 hover:bg-surface2 border border-transparent hover:border-white/5 transition-all group cursor-pointer" onclick="router.navigate('transactions')">
                                 <div class="flex items-center gap-3">
